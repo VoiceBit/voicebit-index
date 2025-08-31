@@ -1,0 +1,49 @@
+name: voicebit-index-prod
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      - release/*
+
+  create:
+    types:
+    - branch
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  voicebit-index-prod-deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy voicebit-checkout
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          dockerfilePath: Dockerfile
+          registryUrl: voicebitacrwestus2.azurecr.io
+          registryUsername: ${{ secrets.ACR_USERNAME }}
+          registryPassword: ${{ secrets.ACR_PASSWORD }}
+          containerAppName: voicebit-index-prod
+          containerAppEnvironment: voicebit-env-prod-westus2
+          resourceGroup: voicebit-rg-prod-westus2
+          imageToBuild: voicebitacrwestus2.azurecr.io/voicebit-index-prod:${{ github.sha }}
+          environmentVariables: >
+            "ENVIRONMENT=prod" 
