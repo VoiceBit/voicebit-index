@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import bsky from "../assets/images/BskyDeck.png";
+import bsky from "../assets/images/BSkyDeck.png";
 import hitesh from "../assets/images/Hitesh_Kenjale.png";
 import lovre from "../assets/images/Lovre Soric.png";
 import jay from "../assets/images/jay.png";
