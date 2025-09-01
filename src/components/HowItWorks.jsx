@@ -3,7 +3,7 @@ import React from "react";
 import step1 from "../assets/images/ans-every-call.png";
 import step2 from "../assets/images/take-orders.png";
 import step3 from "../assets/images/connect.png";
-import steps from "../assets/images/works-steps.png";
+import steps from "../assets/images/Road Map-2.png";
 import Header from "./Header";
 import useReveal from "../hooks/useReveal";
 
