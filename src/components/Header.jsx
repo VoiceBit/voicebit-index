@@ -134,7 +134,7 @@ const Header = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch("https://api-dev.voicebit.ai/api/v1/inquiries/inquiries", {
+        const response = await fetch("https://api-dev.voicebit.ai/api/v1/inquiries/inquiry", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
