@@ -222,8 +222,9 @@ const Header = () => {
             Book a Demo
           </button>
           <div className="hamburger" onClick={toggleMobileMenu}>
-            ≡
-          </div>
+  {isMobileMenuOpen ? "×" : "≡"}
+</div>
+
         </div>
       </div>
 
