@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import step1 from "../assets/images/ans-every-call.png";
 import step2 from "../assets/images/take-orders.png";
 import step3 from "../assets/images/connect.png";
-import steps from "../assets/images/Road Map-2.png";
+import steps from "../assets/images/voicebit-order-process-roadmap.png";
 import redlogo from "../assets/images/voicebit.png";
 import Header from "./Header";
 import useReveal from "../hooks/useReveal";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 // Simple sanitization function to remove HTML tags
 const sanitizeInput = (input) => {
@@ -23,28 +25,25 @@ const HowItWorks = () => {
   const [ref8, visible8] = useReveal();
   const [ref9, visible9] = useReveal();
 
-  
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-     // Form state
-      const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        title: "",
-        email: "",
-        phone: "",
-        restaurantName: "",
-        locationName: "",
-        website: "",
-        restaurantType: "",
-      });
-    
-      const [errors, setErrors] = useState({});
-      const [isSubmitted, setIsSubmitted] = useState(false); // New state for success message
-      const [submitError, setSubmitError] = useState(""); // New state for API errors
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    title: "",
+    email: "",
+    phone: "",
+    restaurantName: "",
+    locationName: "",
+    website: "",
+    restaurantType: "",
+  });
 
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false); // New state for success message
+  const [submitError, setSubmitError] = useState(""); // New state for API errors
 
-      
   const openPopup = () => {
     setIsPopupOpen(true);
     setIsSubmitted(false); // Reset on opening
@@ -115,6 +114,19 @@ const HowItWorks = () => {
     setErrors(newErrors);
   };
 
+  const handlePhoneChange = (value, country, e, formattedValue) => {
+    // Remove hyphens and other special characters, keep only digits and country code
+    const cleanValue = value.replace(/[-()\s]/g, "");
+    setFormData((prev) => ({ ...prev, phone: cleanValue }));
+
+    // Validate the clean value
+    const newErrors = { ...errors };
+    newErrors.phone = !/^\+?\d{10,}$/.test(cleanValue)
+      ? "Invalid phone number (numbers only, at least 10 digits)"
+      : "";
+    setErrors(newErrors);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -141,13 +153,16 @@ const HowItWorks = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch("https://api-dev.voicebit.ai/api/v1/inquiries/inquiry", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        const response = await fetch(
+          "https://api-dev.voicebit.ai/api/v1/inquiries/inquiry",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
 
         if (response.ok) {
           setIsSubmitted(true); // Show success message on successful API call
@@ -165,15 +180,39 @@ const HowItWorks = () => {
       setErrors(newErrors);
     }
   };
-      
+
+useEffect(() => {
+  document.title = "How VoiceBit Works | Boost Orders & Save Time";
+
+  const description = document.createElement("meta");
+  description.name = "description";
+  description.content =
+    "VoiceBit handles calls so your staff can focus on food and service. From automated ordering to instant handoff to humans, see how our AI increases sales and reduces workload.";
+  document.head.appendChild(description);
+
+  const keywords = document.createElement("meta");
+  keywords.name = "keywords";
+  keywords.content =
+    "how VoiceBit works, restaurant AI calls, automate restaurant orders, food service automation, boost sales restaurants, reduce workload AI assistant";
+  document.head.appendChild(keywords);
+
+  return () => {
+    document.head.removeChild(description);
+    document.head.removeChild(keywords);
+  };
+}, []);
+
+
   return (
     <div>
       <section className="bg-brand">
         <Header />
         <div className="how-it-works-page">
-            <div
+          <div
             ref={ref1}
-            className={`how-it-works-content reveal ${visible1 ? "visible" : ""}`}
+            className={`how-it-works-content reveal ${
+              visible1 ? "visible" : ""
+            }`}
           >
             <h1>
               How VoiceBit <span style={{ color: "#CE1210" }}> Works</span>{" "}
@@ -187,8 +226,8 @@ const HowItWorks = () => {
       </section>
       <section className="steps-sec-cont">
         <div className="steps-sec">
-          <img src={steps} alt="steps" />
-           <div
+          <img src={steps} alt="Step-by-step roadmap of AI voice ordering process with Voicebit" />
+          <div
             ref={ref2}
             className={`step-num-7 reveal ${visible2 ? "visible" : ""}`}
           >
@@ -196,7 +235,7 @@ const HowItWorks = () => {
             <h3>Answer every call</h3>
             <p>
               VoiceBit Pick up your phone instantly, <br /> 24/7. No more missed
-              call,
+              calls,
             </p>
             <ul className="features-list">
               <li>
@@ -249,7 +288,7 @@ const HowItWorks = () => {
                     </defs>
                   </svg>
                 </span>
-                <p>Handle multiple calls simuntaneously</p>
+                <p>Handle multiple calls simultaneously</p>
               </li>
               <li>
                 <span>
@@ -305,7 +344,7 @@ const HowItWorks = () => {
               </li>
             </ul>
           </div>
-            <div
+          <div
             ref={ref3}
             className={`step-num-8 reveal ${visible3 ? "visible" : ""}`}
           >
@@ -422,7 +461,7 @@ const HowItWorks = () => {
               </li>
             </ul>
           </div>
-             <div
+          <div
             ref={ref4}
             className={`step-num-9 reveal ${visible4 ? "visible" : ""}`}
           >
@@ -545,16 +584,16 @@ const HowItWorks = () => {
         <div className="how-it-works-section">
           <div className="steps-container">
             {/* Step 1 */}
-               <div
-            ref={ref5}
-            className={`step-card reveal ${visible5 ? "visible" : ""}`}
-          >
+            <div
+              ref={ref5}
+              className={`step-card reveal ${visible5 ? "visible" : ""}`}
+            >
               <div className="step-number-container">
                 <p className="step-number">Step 1</p>
                 <h3>Answer every call</h3>
                 <p>
                   VoiceBit Pick up your phone instantly, <br /> 24/7. No more
-                  missed call,
+                  missed calls,
                 </p>
                 <ul className="features-list">
                   <li>
@@ -607,7 +646,7 @@ const HowItWorks = () => {
                         </defs>
                       </svg>
                     </span>
-                    <p>Handle multiple calls simuntaneously</p>
+                    <p>Handle multiple calls simultaneously</p>
                   </li>
                   <li>
                     <span>
@@ -682,9 +721,9 @@ const HowItWorks = () => {
 
             {/* Step 2 */}
             <div
-            ref={ref6}
-            className={`step-card reveal ${visible6 ? "visible" : ""}`}
-          >
+              ref={ref6}
+              className={`step-card reveal ${visible6 ? "visible" : ""}`}
+            >
               <div className="step-number-container">
                 <div className="step-2-sec">
                   <p className="step-number">Step 2</p>
@@ -825,9 +864,9 @@ const HowItWorks = () => {
             {/* Step 3 */}
 
             <div
-            ref={ref7}
-            className={`step-card reveal ${visible7 ? "visible" : ""}`}
-          >
+              ref={ref7}
+              className={`step-card reveal ${visible7 ? "visible" : ""}`}
+            >
               <div className="step-number-container">
                 <div className="step-3-sec">
                   <p className="step-number">Step 3</p>
@@ -950,10 +989,10 @@ const HowItWorks = () => {
         </div>
       </section>
       <section className="bg-brand">
-         <div
-            ref={ref8}
-            className={`why-voicebit-section reveal ${visible8 ? "visible" : ""}`}
-          >
+        <div
+          ref={ref8}
+          className={`why-voicebit-section reveal ${visible8 ? "visible" : ""}`}
+        >
           <h2>Why Invest in VoiceBit</h2>
           <div className="why-voicebit-container">
             <div className="voicebit-cards">
@@ -1075,179 +1114,190 @@ const HowItWorks = () => {
             <h2>Ready to Get Started?</h2>
             <p>Join hundreds of restaurants that never miss a call.</p>
             <button className="cta-content-button" onClick={openPopup}>
-            Book a Demo
-          </button>
+              Book a Demo
+            </button>
           </div>
         </div>
-        
-              {isPopupOpen && (
-                <div className="popup-overlay" onClick={closePopup}>
-                  <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-                    <div className="popup-header">
-                      <button className="close-button" onClick={closePopup}>
-                        ×
+
+        {isPopupOpen && (
+          <div className="popup-overlay" onClick={closePopup}>
+            <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+              <div className="popup-header">
+                <button className="close-button" onClick={closePopup}>
+                  ×
+                </button>
+                <img src={redlogo} alt="VoiceBit Logo" className="form-logo" />
+              </div>
+
+              <div
+                className={`popup-body ${isSubmitted ? "success-mode" : ""}`}
+              >
+                {!isSubmitted ? (
+                  <>
+                    <h2 className="form-title">Get In Touch with VoiceBit</h2>
+                    <p className="form-description">
+                      Want to see how VoiceBit can simplify phone orders for
+                      your restaurant? Fill out this quick form and our team
+                      will reach out shortly.
+                    </p>
+
+                    <form onSubmit={handleSubmit}>
+                      <h3 className="form-subtitle">Contact Info</h3>
+
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="firstName"
+                          placeholder="First Name"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.firstName && (
+                          <span className="error">{errors.firstName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="lastName"
+                          placeholder="Last Name"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.lastName && (
+                          <span className="error">{errors.lastName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="title"
+                          placeholder="Title (e.g., owner, Manager)"
+                          value={formData.title}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.title && (
+                          <span className="error">{errors.title}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="email"
+                          name="email"
+                          placeholder="Email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.email && (
+                          <span className="error">{errors.email}</span>
+                        )}
+                      </div>
+                      <h3 className="form-subtitle">Phone number</h3>
+                      <div className="form-group">
+                        <PhoneInput
+                          country={"in"} // default country
+                          value={formData.phone}
+                          onChange={handlePhoneChange} // Use custom handler
+                          inputProps={{
+                            name: "phone",
+                            required: true,
+                          }}
+                          disableCountryCode={false} // Keep country code selector
+                          autoFormat={false} // Disable automatic formatting
+                        />
+                        {errors.phone && (
+                          <span className="error">{errors.phone}</span>
+                        )}
+                      </div>
+
+                      <h3 className="form-subtitle">Business Information</h3>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="restaurantName"
+                          placeholder="Restaurant and Business Name"
+                          value={formData.restaurantName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.restaurantName && (
+                          <span className="error">{errors.restaurantName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="locationName"
+                          placeholder="Name of Location"
+                          value={formData.locationName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.locationName && (
+                          <span className="error">{errors.locationName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="url"
+                          name="website"
+                          placeholder="Website"
+                          value={formData.website}
+                          onChange={handleChange}
+                        />
+                        {errors.website && (
+                          <span className="error">{errors.website}</span>
+                        )}
+                      </div>
+                      <h3 className="form-subtitle">Type of Restaurant</h3>
+                      <div className="form-group">
+                        <select
+                          name="restaurantType"
+                          value={formData.restaurantType}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select</option>
+                          <option value="3-star">3 Star</option>
+                          <option value="5-star">5 Star</option>
+                          <option value="fast-food">Fast Food</option>
+                        </select>
+                        {errors.restaurantType && (
+                          <span className="error">{errors.restaurantType}</span>
+                        )}
+                      </div>
+
+                      <button type="submit" className="submit-button">
+                        Submit
                       </button>
-                      <img src={redlogo} alt="VoiceBit Logo" className="form-logo" />
-                    </div>
-        
-                    <div className={`popup-body ${isSubmitted ? "success-mode" : ""}`}>
-                      {!isSubmitted ? (
-                        <>
-                          <h2 className="form-title">Get In Touch with VoiceBit</h2>
-                          <p className="form-description">
-                            Want to see how VoiceBit can simplify phone orders for your
-                            restaurant? Fill out this quick form and our team will reach
-                            out shortly.
-                          </p>
-        
-                          <form onSubmit={handleSubmit}>
-                            <h3 className="form-subtitle">Contact Info</h3>
-        
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="firstName"
-                                placeholder="First Name"
-                                value={formData.firstName}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.firstName && (
-                                <span className="error">{errors.firstName}</span>
-                              )}
-                            </div>
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="lastName"
-                                placeholder="Last Name"
-                                value={formData.lastName}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.lastName && (
-                                <span className="error">{errors.lastName}</span>
-                              )}
-                            </div>
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="title"
-                                placeholder="Title (e.g., owner, Manager)"
-                                value={formData.title}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.title && (
-                                <span className="error">{errors.title}</span>
-                              )}
-                            </div>
-                            <div className="form-group">
-                              <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.email && (
-                                <span className="error">{errors.email}</span>
-                              )}
-                            </div>
-                            <h3 className="form-subtitle">Phone number</h3>
-                            <div className="form-group">
-                              <input
-                                type="tel"
-                                name="phone"
-                                placeholder="We will call and text you to follow"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.phone && (
-                                <span className="error">{errors.phone}</span>
-                              )}
-                            </div>
-        
-                            <h3 className="form-subtitle">Business Information</h3>
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="restaurantName"
-                                placeholder="Restaurant and Business Name"
-                                value={formData.restaurantName}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.restaurantName && (
-                                <span className="error">{errors.restaurantName}</span>
-                              )}
-                            </div>
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="locationName"
-                                placeholder="Name of Location"
-                                value={formData.locationName}
-                                onChange={handleChange}
-                                required
-                              />
-                              {errors.locationName && (
-                                <span className="error">{errors.locationName}</span>
-                              )}
-                            </div>
-                            <div className="form-group">
-                              <input
-                                type="url"
-                                name="website"
-                                placeholder="Website"
-                                value={formData.website}
-                                onChange={handleChange}
-                              />
-                              {errors.website && (
-                                <span className="error">{errors.website}</span>
-                              )}
-                            </div>
-                            <h3 className="form-subtitle">Type of Restaurant</h3>
-                            <div className="form-group">
-                              <select
-                                name="restaurantType"
-                                value={formData.restaurantType}
-                                onChange={handleChange}
-                                required
-                              >
-                                <option value="">Select</option>
-                                <option value="3-star">3 Star</option>
-                                <option value="5-star">5 Star</option>
-                                <option value="fast-food">Fast Food</option>
-                              </select>
-                              {errors.restaurantType && (
-                                <span className="error">{errors.restaurantType}</span>
-                              )}
-                            </div>
-        
-                            <button type="submit" className="submit-button">
-                              Submit
-                            </button>
-                            {submitError && <span className="error">{submitError}</span>}
-                          </form>
-                        </>
-                      ) : (
-                        <div className="success-message">
-                          <h2 className="form-title">Thank You!</h2>
-                          <p className="form-description">
-                            Thanks, we will reach out to you shortly.
-                          </p>
-                          <button className="submit-button" onClick={closePopup}>
-                            Close
-                          </button>
-                        </div>
+                      {submitError && (
+                        <span className="error">{submitError}</span>
                       )}
-                    </div>
+                    </form>
+                  </>
+                ) : (
+                  <div className="success-message">
+                    <h2 className="form-title">Thank You!</h2>
+                    <p className="form-description">
+                      Your request has been received successfully.
+                    </p>
+                    <p className="form-description">
+                      Our team will connect with you shortly to assist you
+                      further.
+                    </p>
+                    <button className="submit-button" onClick={closePopup}>
+                      Close
+                    </button>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
