@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import step1 from "../assets/images/ans-every-call.png";
-import step2 from "../assets/images/take-orders.png";
-import step3 from "../assets/images/connect.png";
+import step1 from "../assets/images/voicebit-answer-every-call.png";
+import step2 from "../assets/images/voicebit-take-orders.png";
+import step3 from "../assets/images/voicebit-connect-staff.png";
 import steps from "../assets/images/voicebit-order-process-roadmap.png";
-import redlogo from "../assets/images/voicebit.png";
+import redlogo from "../assets/images/voicebit-brand-icon.png";
 import Header from "./Header";
 import useReveal from "../hooks/useReveal";
 import PhoneInput from "react-phone-input-2";
@@ -702,7 +702,7 @@ useEffect(() => {
                   </li>
                 </ul>
               </div>
-              <img src={step1} alt="Step 1" className="step-image step-1-img" />
+              <img src={step1} alt="AI-powered Voicebit system answering every restaurant phone call" className="step-image step-1-img" />
               <svg
                 className="line-svg"
                 width="2"
@@ -843,7 +843,7 @@ useEffect(() => {
               <img
                 style={{ marginRight: "auto", zIndex: 2 }}
                 src={step2}
-                alt="Step 2"
+                alt="Voicebit feature highlight – AI assistant takes customer orders"
                 className="step-image step-2-img"
               />
               <svg
@@ -983,7 +983,7 @@ useEffect(() => {
                   </ul>
                 </div>
               </div>
-              <img src={step3} alt="Step 3" className="step-image step-3-img" />
+              <img src={step3} alt="Voicebit AI connects customer calls to restaurant staff instantly" className="step-image step-3-img" />
             </div>
           </div>
         </div>

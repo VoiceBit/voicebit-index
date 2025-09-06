@@ -1,19 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import heroImage from "../assets/images/voicebit-ai-voice-ordering-hero.gif";
-import starIcon from "../assets/images/starrs.png";
+import starIcon from "../assets/images/voicebit-client-stars.png";
 import phoneImage from "../assets/images/voicebit-mobile-app-demo.gif";
 import businessOwners from "../assets/images/restaurant-owners-trust-voicebit.gif";
-import tastyFood from "../assets/images/tasty-food.png";
-import rayosPizza from "../assets/images/Rayos-pizza.png";
-import bigApplePizza from "../assets/images/Big Apple Pizza.png";
-import newYorkPizza from "../assets/images/New York Pizza.png";
-import redlogo from "../assets/images/voicebit.png";
-import step1 from "../assets/images/Vb.png";
-import step2 from "../assets/images/step-1.png";
-import step3 from "../assets/images/step-3.png";
-import step4 from "../assets/images/bike.png";
-import step5 from "../assets/images/order.png";
-import step6 from "../assets/images/thanks.png";
+import tastyFood from "../assets/images/tasty-food-voicebit.png";
+import rayosPizza from "../assets/images/rayos-pizza-voicebit-client.png";
+import bigApplePizza from "../assets/images/big-apple-pizza-voicebit-client.png";
+import newYorkPizza from "../assets/images/new-york-pizza-voicebit-client.png";
+import redlogo from "../assets/images/voicebit-brand-icon.png";
+import step1 from "../assets/images/voicebit-demo-screen.png";
+import step2 from "../assets/images/voicebit-ordering-process.png";
+import step3 from "../assets/images/voicebit-confirm-the-order.png";
+import step4 from "../assets/images/voicebit-delivery.png";
+import step5 from "../assets/images/voicebit-order-list.png";
+import step6 from "../assets/images/voicebit-thank-you-screen.png";
 import steps from "../assets/images/voicebit-ordering-steps.png";
 import Header from "./Header";
 import useReveal from "../hooks/useReveal";
@@ -421,7 +421,7 @@ const HomePage = () => {
                 <button className="close-button" onClick={closePopup}>
                   ×
                 </button>
-                <img src={redlogo} alt="VoiceBit Logo" className="form-logo" />
+                <img src={redlogo} alt="Voicebit brand icon – AI voice assistant for restaurants" className="form-logo" />
               </div>
 
               <div
@@ -611,7 +611,7 @@ const HomePage = () => {
         <div className="trusted-section padding-inline ">
           <div ref={ref2} className={` reveal ${visible2 ? "visible" : ""}`}>
             <div className="stars">
-              <img src={starIcon} alt="star" className="star" />
+              <img src={starIcon} alt="Voicebit AI phone ordering system" className="star" />
             </div>
             <h2>Trusted by Restaurant Business Owners</h2>
             <img
@@ -669,7 +669,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className="image-container">
-          <img src={tastyFood} alt="Delicious food served with orders placed via Voicebit AI ordering system" className="tasty-food-image" />
+          <img src={tastyFood} alt="Tasty food prepared from orders handled by Voicebit AI" className="tasty-food-image" />
         </div>
       </section>
       <section className="testimonial-section">
@@ -814,7 +814,7 @@ const HomePage = () => {
                   system answers it immediately with no hold music, no delay.
                 </p>
               </div>
-              <img src={step1} alt="Step 1" className="step-image " />
+              <img src={step1} alt="Voicebit demo screen showcasing AI phone ordering solution" className="step-image " />
               <svg
                 className="line-svg"
                 width="2"
@@ -849,7 +849,7 @@ const HomePage = () => {
               <img
                 style={{ marginRight: "auto", zIndex: 2 }}
                 src={step2}
-                alt="Step 2"
+                alt="Voicebit AI ordering process – customer calls the restaurant"
                 className="step-image step-2-img "
               />
               <svg
@@ -883,7 +883,7 @@ const HomePage = () => {
                   </p>
                 </div>
               </div>
-              <img src={step3} alt="Step 3" className="step-image step-3-img" />
+              <img src={step3} alt="AI system – AI processes and confirms the order" className="step-image step-3-img" />
               <svg
                 className="line-svg"
                 width="2"
@@ -919,7 +919,7 @@ const HomePage = () => {
               <img
                 style={{ marginRight: "auto", zIndex: 2 }}
                 src={step4}
-                alt="Step 2"
+                alt="Food delivery bike representing fast restaurant orders with Voicebit"
                 className="step-image step-2-img "
               />
               <svg
@@ -954,7 +954,7 @@ const HomePage = () => {
                   </p>
                 </div>
               </div>
-              <img src={step5} alt="Step 3" className="step-image step-3-img" />
+              <img src={step5} alt="Order list view generated by Voicebit AI phone assistant" className="step-image step-3-img" />
               <svg
                 className="line-svg"
                 width="2"
@@ -989,7 +989,7 @@ const HomePage = () => {
               <img
                 style={{ marginRight: "auto", zIndex: 2 }}
                 src={step6}
-                alt="Step 2"
+                alt="Thank you screen after successful order placement with Voicebit"
                 className="step-image step-2-img "
               />
             </div>

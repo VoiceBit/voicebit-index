@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/images/voicebit-logo.svg";
-import redlogo from "../assets/images/voicebit.png";
+import redlogo from "../assets/images/voicebit-brand-icon.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import bsky from "../assets/images/BskyDeck.png";
+import bsky from "../assets/images/berkeley-skydeck-voicebit.png";
 import hitesh from "../assets/images/hitesh-kenjale-voicebit-ceo.png";
 import lovre from "../assets/images/lovre-soric-voicebit-coo.png";
 import jay from "../assets/images/jay-patel-voicebit-cto.png";
@@ -9,7 +9,7 @@ import bulb from "../assets/images/innovation-idea-icon.gif";
 import useReveal from "../hooks/useReveal";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import redlogo from "../assets/images/voicebit.png";
+import redlogo from "../assets/images/voicebit-brand-icon.png";
 
 // Simple sanitization function to remove HTML tags
 const sanitizeInput = (input) => {
@@ -265,7 +265,7 @@ const AboutUs = () => {
         >
           <div className="skydeck-card">
             <p className="skydeck-text">Backed by</p>
-            <img src={bsky} alt="Berkeley SkyDeck" className="skydeck-logo" />
+            <img src={bsky} alt="Voicebit featured in Berkeley SkyDeck accelerator program" className="skydeck-logo" />
             <p className="skydeck-text">
               We're proud to be backed by Berkeley SkyDeck, one of the top
               university-affiliated startup accelerators in the U.S.
