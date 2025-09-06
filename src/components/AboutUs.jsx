@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import bsky from "../assets/images/BSkyDeck.png";
-import hitesh from "../assets/images/Hitesh_Kenjale.png";
-import lovre from "../assets/images/Lovre Soric.png";
-import jay from "../assets/images/jay.png";
-import jet from "../assets/images/Jet.gif";
-import bulb from "../assets/images/Bulb.gif";
+import bsky from "../assets/images/BskyDeck.png";
+import hitesh from "../assets/images/hitesh-kenjale-voicebit-ceo.png";
+import lovre from "../assets/images/lovre-soric-voicebit-coo.png";
+import jay from "../assets/images/jay-patel-voicebit-cto.png";
+import jet from "../assets/images/growth-jet-icon.gif";
+import bulb from "../assets/images/innovation-idea-icon.gif";
 import useReveal from "../hooks/useReveal";
-
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import redlogo from "../assets/images/voicebit.png";
 
 // Simple sanitization function to remove HTML tags
@@ -23,147 +24,183 @@ const AboutUs = () => {
   const [ref5, visible5] = useReveal();
   const [ref6, visible6] = useReveal();
 
-   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
-       // Form state
-        const [formData, setFormData] = useState({
-          firstName: "",
-          lastName: "",
-          title: "",
-          email: "",
-          phone: "",
-          restaurantName: "",
-          locationName: "",
-          website: "",
-          restaurantType: "",
-        });
-      
-        const [errors, setErrors] = useState({});
-        const [isSubmitted, setIsSubmitted] = useState(false); // New state for success message
-        const [submitError, setSubmitError] = useState(""); // New state for API errors
-  
-  
-        
-    const openPopup = () => {
-      setIsPopupOpen(true);
-      setIsSubmitted(false); // Reset on opening
-      setSubmitError(""); // Reset error on opening
-    };
-  
-    const closePopup = () => {
-      setIsPopupOpen(false);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        title: "",
-        email: "",
-        phone: "",
-        restaurantName: "",
-        locationName: "",
-        website: "",
-        restaurantType: "",
-      });
-      setErrors({});
-      setIsSubmitted(false); // Reset success state
-      setSubmitError(""); // Reset error state
-    };
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      const sanitizedValue = sanitizeInput(value);
-      setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
-  
-      // Real-time validation for all fields
-      const newErrors = { ...errors };
-      switch (name) {
-        case "firstName":
-        case "lastName":
-        case "title":
-        case "restaurantName":
-        case "locationName":
-          newErrors[name] =
-            value.trim() === ""
-              ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
-              : "";
-          break;
-        case "email":
-          newErrors[name] = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedValue)
-            ? "Invalid email format"
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    title: "",
+    email: "",
+    phone: "",
+    restaurantName: "",
+    locationName: "",
+    website: "",
+    restaurantType: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false); // New state for success message
+  const [submitError, setSubmitError] = useState(""); // New state for API errors
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+    setIsSubmitted(false); // Reset on opening
+    setSubmitError(""); // Reset error on opening
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      title: "",
+      email: "",
+      phone: "",
+      restaurantName: "",
+      locationName: "",
+      website: "",
+      restaurantType: "",
+    });
+    setErrors({});
+    setIsSubmitted(false); // Reset success state
+    setSubmitError(""); // Reset error state
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const sanitizedValue = sanitizeInput(value);
+    setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+
+    // Real-time validation for all fields
+    const newErrors = { ...errors };
+    switch (name) {
+      case "firstName":
+      case "lastName":
+      case "title":
+      case "restaurantName":
+      case "locationName":
+        newErrors[name] =
+          value.trim() === ""
+            ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
             : "";
-          break;
-        case "phone":
-          newErrors[name] = !/^\+?[\d\s-]{10,}$/.test(sanitizedValue)
-            ? "Invalid phone number"
+        break;
+      case "email":
+        newErrors[name] = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedValue)
+          ? "Invalid email format"
+          : "";
+        break;
+      case "phone":
+        newErrors[name] = !/^\+?[\d\s-]{10,}$/.test(sanitizedValue)
+          ? "Invalid phone number"
+          : "";
+        break;
+      case "website":
+        newErrors[name] =
+          sanitizedValue &&
+          !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
+            sanitizedValue
+          )
+            ? "Invalid website URL"
             : "";
-          break;
-        case "website":
-          newErrors[name] =
-            sanitizedValue &&
-            !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
-              sanitizedValue
-            )
-              ? "Invalid website URL"
-              : "";
-          break;
-        case "restaurantType":
-          newErrors[name] = value === "" ? "Restaurant type is required" : "";
-          break;
-        default:
-          newErrors[name] = "";
-      }
-      setErrors(newErrors);
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const newErrors = {};
-      if (!formData.firstName) newErrors.firstName = "First Name is required";
-      if (!formData.lastName) newErrors.lastName = "Last Name is required";
-      if (!formData.title) newErrors.title = "Title is required";
-      if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-        newErrors.email = "Valid email is required";
-      if (!formData.phone || !/^\+?[\d\s-]{10,}$/.test(formData.phone))
-        newErrors.phone = "Valid phone number is required";
-      if (!formData.restaurantName)
-        newErrors.restaurantName = "Restaurant Name is required";
-      if (!formData.locationName)
-        newErrors.locationName = "Location Name is required";
-      if (
-        formData.website &&
-        !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
-          formData.website
-        )
+        break;
+      case "restaurantType":
+        newErrors[name] = value === "" ? "Restaurant type is required" : "";
+        break;
+      default:
+        newErrors[name] = "";
+    }
+    setErrors(newErrors);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = {};
+    if (!formData.firstName) newErrors.firstName = "First Name is required";
+    if (!formData.lastName) newErrors.lastName = "Last Name is required";
+    if (!formData.title) newErrors.title = "Title is required";
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      newErrors.email = "Valid email is required";
+    if (!formData.phone || !/^\+?[\d\s-]{10,}$/.test(formData.phone))
+      newErrors.phone = "Valid phone number is required";
+    if (!formData.restaurantName)
+      newErrors.restaurantName = "Restaurant Name is required";
+    if (!formData.locationName)
+      newErrors.locationName = "Location Name is required";
+    if (
+      formData.website &&
+      !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
+        formData.website
       )
-        newErrors.website = "Invalid website URL";
-      if (!formData.restaurantType)
-        newErrors.restaurantType = "Restaurant type is required";
-  
-      if (Object.keys(newErrors).length === 0) {
-        try {
-          const response = await fetch("https://api-dev.voicebit.ai/api/v1/inquiries/inquiry", {
+    )
+      newErrors.website = "Invalid website URL";
+    if (!formData.restaurantType)
+      newErrors.restaurantType = "Restaurant type is required";
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await fetch(
+          "https://api-dev.voicebit.ai/api/v1/inquiries/inquiry",
+          {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(formData),
-          });
-  
-          if (response.ok) {
-            setIsSubmitted(true); // Show success message on successful API call
-            setSubmitError(""); // Clear any previous errors
-          } else {
-            const errorData = await response.json();
-            setSubmitError(
-              errorData.message || "Failed to submit the form. Please try again."
-            );
           }
-        } catch (error) {
-          setSubmitError("An error occurred. Please try again later.");
+        );
+
+        if (response.ok) {
+          setIsSubmitted(true); // Show success message on successful API call
+          setSubmitError(""); // Clear any previous errors
+        } else {
+          const errorData = await response.json();
+          setSubmitError(
+            errorData.message || "Failed to submit the form. Please try again."
+          );
         }
-      } else {
-        setErrors(newErrors);
+      } catch (error) {
+        setSubmitError("An error occurred. Please try again later.");
       }
-    };
+    } else {
+      setErrors(newErrors);
+    }
+  };
+
+  const handlePhoneChange = (value, country, e, formattedValue) => {
+    // Remove hyphens and other special characters, keep only digits and country code
+    const cleanValue = value.replace(/[-()\s]/g, "");
+    setFormData((prev) => ({ ...prev, phone: cleanValue }));
+
+    // Validate the clean value
+    const newErrors = { ...errors };
+    newErrors.phone = !/^\+?\d{10,}$/.test(cleanValue)
+      ? "Invalid phone number (numbers only, at least 10 digits)"
+      : "";
+    setErrors(newErrors);
+  };
+
+  useEffect(() => {
+  document.title = "About Us | Redefining Restaurant Calls";
+
+  const description = document.createElement("meta");
+  description.name = "description";
+  description.content =
+    "Discover VoiceBit’s mission to help restaurants reclaim their customer relationships. Learn how our AI-powered call assistant boosts reliability, empathy, accountability, and innovation.";
+  document.head.appendChild(description);
+
+  const keywords = document.createElement("meta");
+  keywords.name = "keywords";
+  keywords.content =
+    "about VoiceBit, restaurant call automation, AI call assistant, restaurant customer relationships, call reliability, innovation in restaurants";
+  document.head.appendChild(keywords);
+
+  return () => {
+    document.head.removeChild(description);
+    document.head.removeChild(keywords);
+  };
+}, []);
+
   return (
     <div>
       <section className="bg-brand">
@@ -178,7 +215,7 @@ const AboutUs = () => {
             <h1>About Us</h1>
             <div className="mission-section">
               <div className="mission">
-                <img src={jet} alt="jet" />
+                <img src={jet} alt="Jet icon symbolizing business growth with Voicebit AI voice ordering" />
                 <h2>
                   Our <br /> Mission
                 </h2>
@@ -198,7 +235,7 @@ const AboutUs = () => {
           className={`why-started-section reveal ${visible2 ? "visible" : ""}`}
         >
           <div className="why-started-content">
-            <img src={bulb} alt="bulb" />
+            <img src={bulb} alt="Innovation bulb icon representing Voicebit’s AI-powered solutions" />
 
             <div className="why-started-texts">
               <p className="why-started-text">
@@ -351,7 +388,7 @@ const AboutUs = () => {
           <h2>Meet the Team</h2>
           <div className="team-card-container">
             <div className="team-card">
-              <img src={hitesh} alt="Hitesh" />
+              <img src={hitesh} alt="Hitesh Kenjale – CEO of Voicebit, AI-driven restaurant solutions leader" />
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <h3>Hitesh Kenjale</h3>
                 <span className="team-position"> CEO</span>
@@ -359,27 +396,27 @@ const AboutUs = () => {
               <p>
                 A second-time founder with proven go-to-market experience,
                 Hitesh previously scaled a consumer business to 200,000+
-                customer across 120+ retail location. At Voicebit, he drives
+                customers across 120+ retail locations. At Voicebit, he drives
                 product vision, growth strategy, and market positioning. He’s
-                passionate about applying AI to solve high-friction problem for
-                small business at scale.
+                passionate about applying AI to solve high-friction problems for
+                small businesses at scale.
               </p>
             </div>
             <div className="team-card">
-              <img src={lovre} alt="Lovre" />
+              <img src={lovre} alt="Lovre Soric – COO of Voicebit, restaurant operations and strategy expert" />
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <h3>Lovre Soric </h3>
                 <span className="team-position"> COO</span>
               </div>
               <p>
-                Former strategy consultant with deep domain expertise in qucik
+                Former strategy consultant with deep domain expertise in quick
                 service restaurant (QSB) operations, customer success, and
                 implementation. He brings a systems, thinking approach and
-                operational rigor to scale exceution and drive retention.
+                operational rigor to scale execution and drive retention.
               </p>
             </div>
             <div className="team-card">
-              <img src={jay} alt="Jay" />
+              <img src={jay} alt="Jay Patel – CTO of Voicebit, AI/ML expert and product architect" />
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <h3>Jay Patel</h3>
                 <span className="team-position"> CTO</span>
@@ -388,7 +425,7 @@ const AboutUs = () => {
                 Former Senior Software Engineer at Microsoft with deep
                 experience in AI/ML and large-scale infrastructure. Jay oversees
                 engineering and product development at VoiceBit, architecting
-                scalable, reliable, and secure AI-driven system purpose-built
+                scalable, reliable, and secure AI-driven systems purpose-built
                 for real world business use.
               </p>
             </div>
@@ -403,179 +440,190 @@ const AboutUs = () => {
           >
             <h2>Let's Talk </h2>
             <p>Want to learn more, partner with us, or just say hello?</p>
-             <button className="cta-content-button" onClick={openPopup}>
-            Book a Demo
-          </button>
+            <button className="cta-content-button" onClick={openPopup}>
+              Book a Demo
+            </button>
           </div>
         </div>
-         {isPopupOpen && (
-                        <div className="popup-overlay" onClick={closePopup}>
-                          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-                            <div className="popup-header">
-                              <button className="close-button" onClick={closePopup}>
-                                ×
-                              </button>
-                              <img src={redlogo} alt="VoiceBit Logo" className="form-logo" />
-                            </div>
-                
-                            <div className={`popup-body ${isSubmitted ? "success-mode" : ""}`}>
-                              {!isSubmitted ? (
-                                <>
-                                  <h2 className="form-title">Get In Touch with VoiceBit</h2>
-                                  <p className="form-description">
-                                    Want to see how VoiceBit can simplify phone orders for your
-                                    restaurant? Fill out this quick form and our team will reach
-                                    out shortly.
-                                  </p>
-                
-                                  <form onSubmit={handleSubmit}>
-                                    <h3 className="form-subtitle">Contact Info</h3>
-                
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        name="firstName"
-                                        placeholder="First Name"
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.firstName && (
-                                        <span className="error">{errors.firstName}</span>
-                                      )}
-                                    </div>
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        name="lastName"
-                                        placeholder="Last Name"
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.lastName && (
-                                        <span className="error">{errors.lastName}</span>
-                                      )}
-                                    </div>
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        name="title"
-                                        placeholder="Title (e.g., owner, Manager)"
-                                        value={formData.title}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.title && (
-                                        <span className="error">{errors.title}</span>
-                                      )}
-                                    </div>
-                                    <div className="form-group">
-                                      <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="Email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.email && (
-                                        <span className="error">{errors.email}</span>
-                                      )}
-                                    </div>
-                                    <h3 className="form-subtitle">Phone number</h3>
-                                    <div className="form-group">
-                                      <input
-                                        type="tel"
-                                        name="phone"
-                                        placeholder="We will call and text you to follow"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.phone && (
-                                        <span className="error">{errors.phone}</span>
-                                      )}
-                                    </div>
-                
-                                    <h3 className="form-subtitle">Business Information</h3>
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        name="restaurantName"
-                                        placeholder="Restaurant and Business Name"
-                                        value={formData.restaurantName}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.restaurantName && (
-                                        <span className="error">{errors.restaurantName}</span>
-                                      )}
-                                    </div>
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        name="locationName"
-                                        placeholder="Name of Location"
-                                        value={formData.locationName}
-                                        onChange={handleChange}
-                                        required
-                                      />
-                                      {errors.locationName && (
-                                        <span className="error">{errors.locationName}</span>
-                                      )}
-                                    </div>
-                                    <div className="form-group">
-                                      <input
-                                        type="url"
-                                        name="website"
-                                        placeholder="Website"
-                                        value={formData.website}
-                                        onChange={handleChange}
-                                      />
-                                      {errors.website && (
-                                        <span className="error">{errors.website}</span>
-                                      )}
-                                    </div>
-                                    <h3 className="form-subtitle">Type of Restaurant</h3>
-                                    <div className="form-group">
-                                      <select
-                                        name="restaurantType"
-                                        value={formData.restaurantType}
-                                        onChange={handleChange}
-                                        required
-                                      >
-                                        <option value="">Select</option>
-                                        <option value="3-star">3 Star</option>
-                                        <option value="5-star">5 Star</option>
-                                        <option value="fast-food">Fast Food</option>
-                                      </select>
-                                      {errors.restaurantType && (
-                                        <span className="error">{errors.restaurantType}</span>
-                                      )}
-                                    </div>
-                
-                                    <button type="submit" className="submit-button">
-                                      Submit
-                                    </button>
-                                    {submitError && <span className="error">{submitError}</span>}
-                                  </form>
-                                </>
-                              ) : (
-                                <div className="success-message">
-                                  <h2 className="form-title">Thank You!</h2>
-                                  <p className="form-description">
-                                    Thanks, we will reach out to you shortly.
-                                  </p>
-                                  <button className="submit-button" onClick={closePopup}>
-                                    Close
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+        {isPopupOpen && (
+          <div className="popup-overlay" onClick={closePopup}>
+            <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+              <div className="popup-header">
+                <button className="close-button" onClick={closePopup}>
+                  ×
+                </button>
+                <img src={redlogo} alt="VoiceBit Logo" className="form-logo" />
+              </div>
+
+              <div
+                className={`popup-body ${isSubmitted ? "success-mode" : ""}`}
+              >
+                {!isSubmitted ? (
+                  <>
+                    <h2 className="form-title">Get In Touch with VoiceBit</h2>
+                    <p className="form-description">
+                      Want to see how VoiceBit can simplify phone orders for
+                      your restaurant? Fill out this quick form and our team
+                      will reach out shortly.
+                    </p>
+
+                    <form onSubmit={handleSubmit}>
+                      <h3 className="form-subtitle">Contact Info</h3>
+
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="firstName"
+                          placeholder="First Name"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.firstName && (
+                          <span className="error">{errors.firstName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="lastName"
+                          placeholder="Last Name"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.lastName && (
+                          <span className="error">{errors.lastName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="title"
+                          placeholder="Title (e.g., owner, Manager)"
+                          value={formData.title}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.title && (
+                          <span className="error">{errors.title}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="email"
+                          name="email"
+                          placeholder="Email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.email && (
+                          <span className="error">{errors.email}</span>
+                        )}
+                      </div>
+                      <h3 className="form-subtitle">Phone number</h3>
+                      <div className="form-group">
+                        <PhoneInput
+                          country={"in"} // default country
+                          value={formData.phone}
+                          onChange={handlePhoneChange} // Use custom handler
+                          inputProps={{
+                            name: "phone",
+                            required: true,
+                          }}
+                          disableCountryCode={false} // Keep country code selector
+                          autoFormat={false} // Disable automatic formatting
+                        />
+                        {errors.phone && (
+                          <span className="error">{errors.phone}</span>
+                        )}
+                      </div>
+
+                      <h3 className="form-subtitle">Business Information</h3>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="restaurantName"
+                          placeholder="Restaurant and Business Name"
+                          value={formData.restaurantName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.restaurantName && (
+                          <span className="error">{errors.restaurantName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="locationName"
+                          placeholder="Name of Location"
+                          value={formData.locationName}
+                          onChange={handleChange}
+                          required
+                        />
+                        {errors.locationName && (
+                          <span className="error">{errors.locationName}</span>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="url"
+                          name="website"
+                          placeholder="Website"
+                          value={formData.website}
+                          onChange={handleChange}
+                        />
+                        {errors.website && (
+                          <span className="error">{errors.website}</span>
+                        )}
+                      </div>
+                      <h3 className="form-subtitle">Type of Restaurant</h3>
+                      <div className="form-group">
+                        <select
+                          name="restaurantType"
+                          value={formData.restaurantType}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select</option>
+                          <option value="3-star">3 Star</option>
+                          <option value="5-star">5 Star</option>
+                          <option value="fast-food">Fast Food</option>
+                        </select>
+                        {errors.restaurantType && (
+                          <span className="error">{errors.restaurantType}</span>
+                        )}
+                      </div>
+
+                      <button type="submit" className="submit-button">
+                        Submit
+                      </button>
+                      {submitError && (
+                        <span className="error">{submitError}</span>
                       )}
+                    </form>
+                  </>
+                ) : (
+                  <div className="success-message">
+                    <h2 className="form-title">Thank You!</h2>
+                    <p className="form-description">
+                      Your request has been received successfully.
+                    </p>
+                    <p className="form-description">
+                      Our team will connect with you shortly to assist you
+                      further.
+                    </p>
+                    <button className="submit-button" onClick={closePopup}>
+                      Close
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/images/voicebit-logo.svg";
 import redlogo from "../assets/images/voicebit.png";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 // Simple sanitization function to remove HTML tags
 const sanitizeInput = (input) => {
@@ -86,8 +88,8 @@ const Header = () => {
           : "";
         break;
       case "phone":
-        newErrors[name] = !/^\+?[\d\s-]{10,}$/.test(sanitizedValue)
-          ? "Invalid phone number"
+        newErrors[name] = !/^\+?\d{10,}$/.test(sanitizedValue) // Allow only digits after country code, minimum 10 digits
+          ? "Invalid phone number (numbers only, at least 10 digits)"
           : "";
         break;
       case "website":
@@ -108,6 +110,19 @@ const Header = () => {
     setErrors(newErrors);
   };
 
+  const handlePhoneChange = (value, country, e, formattedValue) => {
+    // Remove hyphens and other special characters, keep only digits and country code
+    const cleanValue = value.replace(/[-()\s]/g, "");
+    setFormData((prev) => ({ ...prev, phone: cleanValue }));
+
+    // Validate the clean value
+    const newErrors = { ...errors };
+    newErrors.phone = !/^\+?\d{10,}$/.test(cleanValue)
+      ? "Invalid phone number (numbers only, at least 10 digits)"
+      : "";
+    setErrors(newErrors);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -116,8 +131,8 @@ const Header = () => {
     if (!formData.title) newErrors.title = "Title is required";
     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       newErrors.email = "Valid email is required";
-    if (!formData.phone || !/^\+?[\d\s-]{10,}$/.test(formData.phone))
-      newErrors.phone = "Valid phone number is required";
+    if (!formData.phone || !/^\+?\d{10,}$/.test(formData.phone))
+      newErrors.phone = "Valid phone number (numbers only, at least 10 digits) is required";
     if (!formData.restaurantName)
       newErrors.restaurantName = "Restaurant Name is required";
     if (!formData.locationName)
@@ -134,13 +149,16 @@ const Header = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch("https://api-dev.voicebit.ai/api/v1/inquiries/inquiry", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        const response = await fetch(
+          "https://api-dev.voicebit.ai/api/v1/inquiries/inquiry",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
 
         if (response.ok) {
           setIsSubmitted(true); // Show success message on successful API call
@@ -167,7 +185,7 @@ const Header = () => {
             to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            <img src={logo} alt="VoiceBit Logo" className="logo" />
+            <img src={logo} alt="Voicebit official logo – AI voice assistant for restaurants" className="logo" />
           </Link>
         </div>
         <nav className={`nav ${isMobileMenuOpen ? "mobile-open" : ""}`}>
@@ -204,8 +222,9 @@ const Header = () => {
             Book a Demo
           </button>
           <div className="hamburger" onClick={toggleMobileMenu}>
-            ≡
-          </div>
+  {isMobileMenuOpen ? "×" : "≡"}
+</div>
+
         </div>
       </div>
 
@@ -286,13 +305,16 @@ const Header = () => {
                     </div>
                     <h3 className="form-subtitle">Phone number</h3>
                     <div className="form-group">
-                      <input
-                        type="tel"
-                        name="phone"
-                        placeholder="We will call and text you to follow"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
+                      <PhoneInput
+                        country={"in"} // default country
+                        value={ formData.phone}
+                        onChange={handlePhoneChange} // Use custom handler
+                        inputProps={{
+                          name: "phone",
+                          required: true,
+                        }}
+                        disableCountryCode={false} // Keep country code selector
+                        autoFormat={false} // Disable automatic formatting
                       />
                       {errors.phone && (
                         <span className="error">{errors.phone}</span>
@@ -366,9 +388,12 @@ const Header = () => {
                 <div className="success-message">
                   <h2 className="form-title">Thank You!</h2>
                   <p className="form-description">
-                    Thanks, we will reach out to you shortly.
-                  </p>
-                  <button className="submit-button" onClick={closePopup}>
+                            Your request has been received successfully.
+                          </p>
+                          <p className="form-description">
+                            Our team will connect with you shortly to assist you further.
+                          </p>
+                  <button className="close-btn" onClick={closePopup}>
                     Close
                   </button>
                 </div>
