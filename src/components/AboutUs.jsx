@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import bsky from "../assets/images/BskyDeck.png";
+import bsky from "../assets/images/BSkyDeck.png";
 import hitesh from "../assets/images/hitesh-kenjale-voicebit-ceo.png";
 import lovre from "../assets/images/lovre-soric-voicebit-coo.png";
 import jay from "../assets/images/jay-patel-voicebit-cto.png";
