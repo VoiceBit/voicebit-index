@@ -91,28 +91,28 @@ const HowItWorks = () => {
       case "firstName":
       case "lastName":
       case "title":
-        newErrors[name] =
-          value.trim() === ""
-            ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
-            : "";
-        break;
+//         newErrors[name] =
+//           value.trim() === ""
+//             ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
+//             : "";
+//         break;
       case "email":
-        newErrors[name] = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedValue)
-          ? "Invalid email format"
-          : "";
-        break;
+//         newErrors[name] = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedValue)
+//           ? "Invalid email format"
+//           : "";
+//         break;
       case "website":
-        newErrors[name] =
-          sanitizedValue &&
-          !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
-            sanitizedValue
-          )
-            ? "Invalid website URL"
-            : "";
-        break;
+//         newErrors[name] =
+//           sanitizedValue &&
+//           !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
+//             sanitizedValue
+//           )
+//             ? "Invalid website URL"
+//             : "";
+//         break;
       case "restaurantType":
-        newErrors[name] = value === "" ? "Restaurant type is required" : "";
-        break;
+//         newErrors[name] = value === "" ? "Restaurant type is required" : "";
+//         break;
       default:
         newErrors[name] = "";
     }
@@ -161,9 +161,9 @@ const handlePhoneChange = (value, country) => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First Name is required";
     if (!formData.lastName) newErrors.lastName = "Last Name is required";
-    if (!formData.title) newErrors.title = "Title is required";
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Valid email is required";
+//     if (!formData.title) newErrors.title = "Title is required";
+//     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+//       newErrors.email = "Valid email is required";
     if (!formData.phone || !/^\d{10,}$/.test(formData.phone))
       newErrors.phone = "Valid phone number is required";
 
@@ -1195,7 +1195,6 @@ useEffect(() => {
                         placeholder="Title (e.g., Owner, Manager)"
                         value={formData.title}
                         onChange={handleChange}
-                        required
                       />
                       {errors.title && (
                         <span className="error">{errors.title}</span>
@@ -1208,7 +1207,6 @@ useEffect(() => {
                         placeholder="Email"
                         value={formData.email}
                         onChange={handleChange}
-                        required
                       />
                       {errors.email && (
                         <span className="error">{errors.email}</span>
