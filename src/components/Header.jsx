@@ -21,7 +21,7 @@ const Header = () => {
     lastName: "",
     title: "",
     email: "",
-    phone: "",
+    phone: "+1",
     restaurantName: "",
     locationName: "",
     website: "",
@@ -53,7 +53,7 @@ const Header = () => {
       lastName: "",
       title: "",
       email: "",
-      phone: "",
+      phone: "+1",
       restaurantName: "",
       locationName: "",
       website: "",
@@ -75,8 +75,8 @@ const Header = () => {
       case "firstName":
       case "lastName":
       case "title":
-      case "restaurantName":
-      case "locationName":
+        // case "restaurantName":
+        // case "locationName":
         newErrors[name] =
           value.trim() === ""
             ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
@@ -132,20 +132,21 @@ const Header = () => {
     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
       newErrors.email = "Valid email is required";
     if (!formData.phone || !/^\+?\d{10,}$/.test(formData.phone))
-      newErrors.phone = "Valid phone number (numbers only, at least 10 digits) is required";
-    if (!formData.restaurantName)
-      newErrors.restaurantName = "Restaurant Name is required";
-    if (!formData.locationName)
-      newErrors.locationName = "Location Name is required";
-    if (
-      formData.website &&
-      !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
-        formData.website
-      )
-    )
-      newErrors.website = "Invalid website URL";
-    if (!formData.restaurantType)
-      newErrors.restaurantType = "Restaurant type is required";
+      newErrors.phone =
+        "Valid phone number (numbers only, at least 10 digits) is required";
+    // if (!formData.restaurantName)
+    //   newErrors.restaurantName = "Restaurant Name is required";
+    // if (!formData.locationName)
+    //   newErrors.locationName = "Location Name is required";
+    // if (
+    //   formData.website &&
+    //   !/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
+    //     formData.website
+    //   )
+    // )
+    //   newErrors.website = "Invalid website URL";
+    // if (!formData.restaurantType)
+    //   newErrors.restaurantType = "Restaurant type is required";
 
     if (Object.keys(newErrors).length === 0) {
       try {
@@ -185,7 +186,11 @@ const Header = () => {
             to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            <img src={logo} alt="Voicebit official logo – AI voice assistant for restaurants" className="logo" />
+            <img
+              src={logo}
+              alt="Voicebit official logo – AI voice assistant for restaurants"
+              className="logo"
+            />
           </Link>
         </div>
         <nav className={`nav ${isMobileMenuOpen ? "mobile-open" : ""}`}>
@@ -222,9 +227,8 @@ const Header = () => {
             Book a Demo
           </button>
           <div className="hamburger" onClick={toggleMobileMenu}>
-  {isMobileMenuOpen ? "×" : "≡"}
-</div>
-
+            {isMobileMenuOpen ? "×" : "≡"}
+          </div>
         </div>
       </div>
 
@@ -303,11 +307,11 @@ const Header = () => {
                         <span className="error">{errors.email}</span>
                       )}
                     </div>
-                    <h3 className="form-subtitle">Phone number</h3>
+
                     <div className="form-group">
                       <PhoneInput
-                        country={"in"} // default country
-                        value={ formData.phone}
+                        country={"us"} // default country
+                        value={formData.phone}
                         onChange={handlePhoneChange} // Use custom handler
                         inputProps={{
                           name: "phone",
@@ -321,7 +325,9 @@ const Header = () => {
                       )}
                     </div>
 
-                    <h3 className="form-subtitle">Business Information</h3>
+                    <h3 className="form-subtitle">
+                      Business Information (Optional)
+                    </h3>
                     <div className="form-group">
                       <input
                         type="text"
@@ -329,23 +335,9 @@ const Header = () => {
                         placeholder="Restaurant and Business Name"
                         value={formData.restaurantName}
                         onChange={handleChange}
-                        required
                       />
                       {errors.restaurantName && (
                         <span className="error">{errors.restaurantName}</span>
-                      )}
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="locationName"
-                        placeholder="Name of Location"
-                        value={formData.locationName}
-                        onChange={handleChange}
-                        required
-                      />
-                      {errors.locationName && (
-                        <span className="error">{errors.locationName}</span>
                       )}
                     </div>
                     <div className="form-group">
@@ -360,39 +352,25 @@ const Header = () => {
                         <span className="error">{errors.website}</span>
                       )}
                     </div>
-                    <h3 className="form-subtitle">Type of Restaurant</h3>
-                    <div className="form-group">
-                      <select
-                        name="restaurantType"
-                        value={formData.restaurantType}
-                        onChange={handleChange}
-                        required
-                      >
-                        <option value="">Select</option>
-                        <option value="3-star">3 Star</option>
-                        <option value="5-star">5 Star</option>
-                        <option value="fast-food">Fast Food</option>
-                      </select>
-                      {errors.restaurantType && (
-                        <span className="error">{errors.restaurantType}</span>
-                      )}
-                    </div>
 
                     <button type="submit" className="submit-button">
                       Submit
                     </button>
-                    {submitError && <span className="error">{submitError}</span>}
+                    {submitError && (
+                      <span className="error">{submitError}</span>
+                    )}
                   </form>
                 </>
               ) : (
                 <div className="success-message">
                   <h2 className="form-title">Thank You!</h2>
                   <p className="form-description">
-                            Your request has been received successfully.
-                          </p>
-                          <p className="form-description">
-                            Our team will connect with you shortly to assist you further.
-                          </p>
+                    Your request has been received successfully.
+                  </p>
+                  <p className="form-description">
+                    Our team will connect with you shortly to assist you
+                    further.
+                  </p>
                   <button className="close-btn" onClick={closePopup}>
                     Close
                   </button>
