@@ -161,9 +161,9 @@ const handlePhoneChange = (value, country) => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First Name is required";
     if (!formData.lastName) newErrors.lastName = "Last Name is required";
-    if (!formData.title) newErrors.title = "Title is required";
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Valid email is required";
+//     if (!formData.title) newErrors.title = "Title is required";
+//     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+//       newErrors.email = "Valid email is required";
     if (!formData.phone || !/^\d{10,}$/.test(formData.phone))
       newErrors.phone = "Valid phone number is required";
 
@@ -1168,7 +1168,7 @@ useEffect(() => {
                         name="firstName"
                         placeholder="First Name"
                         value={formData.firstName}
-                        onChange={handleChange}
+//                         onChange={handleChange}
                         required
                       />
                       {errors.firstName && (
@@ -1181,7 +1181,7 @@ useEffect(() => {
                         name="lastName"
                         placeholder="Last Name"
                         value={formData.lastName}
-                        onChange={handleChange}
+//                         onChange={handleChange}
                         required
                       />
                       {errors.lastName && (
@@ -1194,7 +1194,7 @@ useEffect(() => {
                         name="title"
                         placeholder="Title (e.g., Owner, Manager)"
                         value={formData.title}
-                        onChange={handleChange}
+//                         onChange={handleChange}
                         required
                       />
                       {errors.title && (
@@ -1207,7 +1207,7 @@ useEffect(() => {
                         name="email"
                         placeholder="Email"
                         value={formData.email}
-                        onChange={handleChange}
+//                         onChange={handleChange}
                         required
                       />
                       {errors.email && (
@@ -1233,7 +1233,7 @@ useEffect(() => {
                         name="restaurantName"
                         placeholder="Restaurant and Business Name"
                         value={formData.restaurantName}
-                        onChange={handleChange}
+//                         onChange={handleChange}
                       />
                       {errors.restaurantName && (
                         <span className="error">{errors.restaurantName}</span>
@@ -1245,7 +1245,7 @@ useEffect(() => {
                         name="website"
                         placeholder="Website"
                         value={formData.website}
-                        onChange={handleChange}
+//                         onChange={handleChange}
                       />
                       {errors.website && (
                         <span className="error">{errors.website}</span>
