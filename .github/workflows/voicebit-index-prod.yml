@@ -40,6 +40,7 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}
           dockerfilePath: Dockerfile
+          dockerBuildArgs: VITE_ENVIRONMENT=prod
           registryUrl: voicebitacrwestus2.azurecr.io
           registryUsername: ${{ secrets.ACR_USERNAME }}
           registryPassword: ${{ secrets.ACR_PASSWORD }}
@@ -48,4 +49,4 @@ jobs:
           resourceGroup: voicebit-rg-prod-westus2
           imageToBuild: voicebitacrwestus2.azurecr.io/voicebit-index-prod:${{ github.sha }}
           environmentVariables: >
-            "ENVIRONMENT=prod" 
+            "ENVIRONMENT=prod" "VITE_ENVIRONMENT=prod" 

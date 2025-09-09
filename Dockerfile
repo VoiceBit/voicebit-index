@@ -13,8 +13,11 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
+# Accept build argument for environment
+ARG VITE_ENVIRONMENT=prod
+
+# Build the application with environment variable
+RUN VITE_ENVIRONMENT=$VITE_ENVIRONMENT npm run build
 
 # Production stage
 FROM nginx:alpine

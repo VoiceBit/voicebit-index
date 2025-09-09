@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Header from "./Header";
 import bsky from "../assets/images/berkeley-skydeck-voicebit.png";
 import hitesh from "../assets/images/hitesh-kenjale-voicebit-ceo.png";
@@ -10,6 +11,7 @@ import useReveal from "../hooks/useReveal";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import redlogo from "../assets/images/voicebit-brand-icon.png";
+import { seoConfig, structuredData } from "../utils/seoConfig";
 
 // Simple sanitization function to remove HTML tags
 const sanitizeInput = (input) => {
@@ -48,6 +50,8 @@ const AboutUs = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false); // New state for success message
   const [submitError, setSubmitError] = useState(""); // New state for API errors
+  
+  const pageData = seoConfig.pages.about;
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -197,29 +201,34 @@ const handlePhoneChange = (value, country) => {
     }
   };
 
-  useEffect(() => {
-  document.title = "About Us | Redefining Restaurant Calls";
-
-  const description = document.createElement("meta");
-  description.name = "description";
-  description.content =
-    "Discover VoiceBit’s mission to help restaurants reclaim their customer relationships. Learn how our AI-powered call assistant boosts reliability, empathy, accountability, and innovation.";
-  document.head.appendChild(description);
-
-  const keywords = document.createElement("meta");
-  keywords.name = "keywords";
-  keywords.content =
-    "about VoiceBit, restaurant call automation, AI call assistant, restaurant customer relationships, call reliability, innovation in restaurants";
-  document.head.appendChild(keywords);
-
-  return () => {
-    document.head.removeChild(description);
-    document.head.removeChild(keywords);
-  };
-}, []);
 
   return (
     <div>
+      <Helmet>
+        <title>{pageData.title}</title>
+        <meta name="description" content={pageData.description} />
+        <meta name="keywords" content={pageData.keywords} />
+        <meta name="robots" content={seoConfig.robotsContent} />
+        <link rel="canonical" href={`${seoConfig.siteUrl}/about-us`} />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={pageData.title} />
+        <meta property="og:description" content={pageData.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${seoConfig.siteUrl}/about-us`} />
+        <meta property="og:site_name" content={seoConfig.siteName} />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageData.title} />
+        <meta name="twitter:description" content={pageData.description} />
+        <meta name="twitter:site" content={seoConfig.twitterHandle} />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData.organization)}
+        </script>
+      </Helmet>
       <section className="bg-brand">
         <Header />
         <div className="how-it-works-page">
