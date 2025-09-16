@@ -321,7 +321,7 @@ const handlePhoneChange = (value, country) => {
 
 
                     <div className="form-group">
-                     <PhoneInput country={"us"}  onChange={handlePhoneChange} inputProps={{ name: "phone", required: true, }} disableCountryCode={false}  autoFormat={false}  />
+                     <PhoneInput country={"us"}  value={formData.countryCode + "" + formData.phone} onChange={handlePhoneChange} inputProps={{ name: "phone", required: true, }} disableCountryCode={false}  autoFormat={false}  />
                       {errors.phone && (
                         <span className="error">{errors.phone}</span>
                       )}
