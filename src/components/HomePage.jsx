@@ -446,7 +446,7 @@ const handlePhoneChange = (value, country) => {
             <div className={`popup-body ${isSubmitted ? "success-mode" : ""}`}>
               {!isSubmitted ? (
                 <>
-                  <h2 className="form-title">Get In Touch with VoiceBit</h2>
+                  <h3 className="form-title">Get In Touch with VoiceBit</h3>
                   <p className="form-description">
                     Want to see how VoiceBit can simplify phone orders for your
                     restaurant? Fill out this quick form and our team will reach
