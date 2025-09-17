@@ -535,7 +535,7 @@ const handlePhoneChange = (value, country) => {
                     </div>
                     <div className="form-group">
                       <input
-                        type="url"
+                        type="text"
                         name="website"
                         placeholder="Website"
                         value={formData.website}
