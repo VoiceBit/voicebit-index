@@ -270,7 +270,7 @@ const handlePhoneChange = (value, country) => {
                       <input
                         type="text"
                         name="firstName"
-                        placeholder="First Name"
+                        placeholder="Name"
                         value={formData.firstName}
                         onChange={handleChange}
                         required
@@ -279,7 +279,7 @@ const handlePhoneChange = (value, country) => {
                         <span className="error">{errors.firstName}</span>
                       )}
                     </div>
-                    <div className="form-group">
+{/*                     <div className="form-group">
                       <input
                         type="text"
                         name="lastName"
@@ -291,8 +291,8 @@ const handlePhoneChange = (value, country) => {
                       {errors.lastName && (
                         <span className="error">{errors.lastName}</span>
                       )}
-                    </div>
-                    <div className="form-group">
+                    </div> */}
+{/*                     <div className="form-group">
                       <input
                         type="text"
                         name="title"
@@ -303,7 +303,7 @@ const handlePhoneChange = (value, country) => {
                       {errors.title && (
                         <span className="error">{errors.title}</span>
                       )}
-                    </div>
+                    </div> */}
                     <div className="form-group">
                       <input
                         type="email"
