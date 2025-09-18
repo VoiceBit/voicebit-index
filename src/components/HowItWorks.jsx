@@ -160,7 +160,7 @@ const handlePhoneChange = (value, country) => {
     e.preventDefault();
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First Name is required";
-    if (!formData.lastName) newErrors.lastName = "Last Name is required";
+//     if (!formData.lastName) newErrors.lastName = "Last Name is required";
 //     if (!formData.title) newErrors.title = "Title is required";
 //     if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
 //       newErrors.email = "Valid email is required";
